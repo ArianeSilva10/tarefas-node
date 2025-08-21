@@ -3,7 +3,10 @@ const express = require("express");
 const db = require("./db");
 const { json } = require("stream/consumers");
 const app = express();
+const cors = require("cors");
+app.use(cors()); // libera todas as origens
 app.use(express.json());
+
 
 const FILE_PATH = "tarefas.json";
 let tarefas = []; // armazenamento
@@ -50,12 +53,8 @@ app.post("/tarefas", (req, res) => {
 app.put("/tarefas/:id", (req, res) => {
   const { id } = req.params;
   db.run("UPDATE tarefas SET concluida = 1 WHERE id = ?", [id], function (err) {
-    if (err) {
-      return res.status(500).json({ erro: err.message });
-    }
-    if (this.changes === 0) {
-      return this.reset.status(404).json({ erro: "Tarefa não encontrada" });
-    }
+    if (err) return res.status(500).json({ erro: err.message });
+    if (this.changes === 0) return res.status(404).json({ erro: "Tarefa não encontrada" });
     res.json({ id, concluida: 1 });
   });
 });
