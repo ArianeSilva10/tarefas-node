@@ -5,7 +5,6 @@ function App() {
   const [tarefas, setTarefas] = useState([]);
   const [titulo, setTitulo] = useState("");
 
-  // carregar tarefas ao iniciar
   useEffect(() => {
     carregarTarefas();
   }, []);
@@ -33,37 +32,61 @@ function App() {
   };
 
   return (
-    <div style={{ margin: "30px", fontFamily: "Arial" }}>
-      <h1>✅ Lista de Tarefas</h1>
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-6">
+      <div className="w-full max-w-md bg-white shadow-lg rounded-2xl p-6">
+        <h1 className="text-2xl font-bold text-center text-pink-600 mb-4">
+          ✅ Lista de Tarefas
+        </h1>
 
-      <input
-        type="text"
-        placeholder="Nova tarefa..."
-        value={titulo}
-        onChange={(e) => setTitulo(e.target.value)}
-      />
-      <button onClick={adicionarTarefa}>Adicionar</button>
+        <div className="flex mb-4">
+          <input
+            type="text"
+            placeholder="Nova tarefa..."
+            value={titulo}
+            onChange={(e) => setTitulo(e.target.value)}
+            className="flex-1 border border-gray-300 rounded-l-lg px-3 py-2 outline-none focus:ring-2 focus:ring-pink-400"
+          />
+          <button
+            onClick={adicionarTarefa}
+            className="bg-pink-600 text-white px-4 rounded-r-lg hover:bg-pink-700"
+          >
+            Adicionar
+          </button>
+        </div>
 
-      <ul>
-        {tarefas.map((tarefa) => (
-          <li key={tarefa.id}>
-            <span
-              style={{
-                textDecoration: tarefa.concluida ? "line-through" : "none",
-                marginRight: "10px",
-              }}
+        <ul className="space-y-2">
+          {tarefas.map((tarefa) => (
+            <li
+              key={tarefa.id}
+              className="flex justify-between items-center bg-gray-50 p-2 rounded-lg border"
             >
-              {tarefa.titulo}
-            </span>
-            {!tarefa.concluida && (
-              <button onClick={() => concluirTarefa(tarefa.id)}>
-                Concluir
-              </button>
-            )}
-            <button onClick={() => removerTarefa(tarefa.id)}>Remover</button>
-          </li>
-        ))}
-      </ul>
+              <span
+                className={`flex-1 ${
+                  tarefa.concluida ? "line-through text-gray-400" : ""
+                }`}
+              >
+                {tarefa.titulo}
+              </span>
+              <div className="space-x-2">
+                {!tarefa.concluida && (
+                  <button
+                    onClick={() => concluirTarefa(tarefa.id)}
+                    className="bg-green-500 text-white px-3 py-1 rounded-lg hover:bg-green-600"
+                  >
+                    Concluir
+                  </button>
+                )}
+                <button
+                  onClick={() => removerTarefa(tarefa.id)}
+                  className="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600"
+                >
+                  Remover
+                </button>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }
