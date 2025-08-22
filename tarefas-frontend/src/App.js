@@ -38,6 +38,10 @@ function App() {
     return true; // todas
   });
 
+  const total = tarefas.length;
+  const concluidas = tarefas.filter(t => t.concluida).length;
+  const pendentes = total - concluidas;
+
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-6">
       <div className="w-full max-w-md bg-white shadow-lg rounded-2xl p-6">
@@ -124,6 +128,11 @@ function App() {
             </li>
           ))}
         </ul>
+        <div className="mt-4 text-center text-gray-600">
+          <p>Total: <span className="font-bold">{total}</span></p>
+          <p>Concluidas: <span className="text-green-600 font-bold">{concluidas}</span></p>
+          <p>Pendentes: <span className="text-red-600 font-bold">{pendentes}</span></p>
+        </div>
       </div>
     </div>
   );
