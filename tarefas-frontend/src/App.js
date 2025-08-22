@@ -4,6 +4,7 @@ import axios from "axios";
 function App() {
   const [tarefas, setTarefas] = useState([]);
   const [titulo, setTitulo] = useState("");
+  const [filtro, setFiltro] = useState("todas");
 
   useEffect(() => {
     carregarTarefas();
@@ -31,6 +32,12 @@ function App() {
     carregarTarefas();
   };
 
+  const TarefasFiltradas = tarefas.filter((tarefa) => {
+    if(filtro === "concluidas") return tarefa.concluida;
+    if(filtro === "pendentes") return !tarefa.concluida;
+    return true; // todas
+  });
+
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-6">
       <div className="w-full max-w-md bg-white shadow-lg rounded-2xl p-6">
@@ -54,8 +61,39 @@ function App() {
           </button>
         </div>
 
+        <div className="flex justify-center space-x-2 mb-4">
+          <button onClick={() => setFiltro("todas")}
+            className={`px-3 py-1 rounded-lg ${
+              filtro === "todas"
+              ? "bg-pink-600 text-white"
+              : "bg-gray-200 hover:bg-gray-300"
+            }`}
+            >
+              Todas
+          </button>
+          <button onClick={() => setFiltro("pendentes")}
+            className={`px-3 py-1 rounded-lg ${
+              filtro === "pendentes"
+              ? "bg-pink-600 text-white"
+              : "bg-gray-200 hover:bg-gray-300"
+            }`}
+            >
+              Pendentes
+          </button>
+
+          <button onClick={() => setFiltro("concluidas")}
+            className={`px-3 py-1 rounded-lg ${
+              filtro === "concluidas"
+              ? "bg-pink-600 text-white"
+              : "bg-gray-200 hover:bg-gray-300"
+            }`}
+            >
+              Concluidas
+          </button>
+        </div>
+
         <ul className="space-y-2">
-          {tarefas.map((tarefa) => (
+          {TarefasFiltradas.map((tarefa) => (
             <li
               key={tarefa.id}
               className="flex justify-between items-center bg-gray-50 p-2 rounded-lg border"
